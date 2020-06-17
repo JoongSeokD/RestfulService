@@ -1,9 +1,7 @@
 package com.study.studyrestfulservice.account;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,6 +20,11 @@ public class AccountController {
     @GetMapping("/users/{id}")
     public Account retrieveUser(@PathVariable("id") Long id){
         return accountDaoService.findOne(id);
+    }
+
+    @PostMapping("/users")
+    public void createAccount(@RequestBody Account account){
+        Account saveAccount = accountDaoService.save(account);
     }
 
 
