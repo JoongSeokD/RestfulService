@@ -1,9 +1,12 @@
 package com.study.studyrestfulservice.account;
 
+import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class AccountDaoService {
     private static List<Account> accounts = new ArrayList<>();
 
