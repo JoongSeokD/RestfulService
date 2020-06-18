@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
@@ -33,9 +34,9 @@ public class AdminAccountController {
         return mapping;
     }
 
-    // GET / users/1
-    @GetMapping("/users/{id}")
-    public MappingJacksonValue retrieveUser(@PathVariable("id") Long id){
+    // GET /admin/users/1 -> /admin/v1/users/1
+    @GetMapping("/v1/users/{id}")
+    public MappingJacksonValue retrieveUserV1(@PathVariable("id") Long id){
         Account account = accountDaoService.findOne(id);
 
         if (account == null){
@@ -47,6 +48,30 @@ public class AdminAccountController {
         FilterProvider filters = new SimpleFilterProvider().addFilter("UserInfo",filter);
 
         MappingJacksonValue mapping = new MappingJacksonValue(account);
+        mapping.setFilters(filters);
+
+
+        return mapping;
+    }
+    @GetMapping("/v2/users/{id}")
+    public MappingJacksonValue retrieveUserV2(@PathVariable("id") Long id){
+        Account account = accountDaoService.findOne(id);
+
+        if (account == null){
+            throw new UserNotFoundException(String.format("ID[%s] not found", id));
+        }
+
+        // Account -> Account2
+        AccountV2 accountV2 = new AccountV2();
+        BeanUtils.copyProperties(account, accountV2);
+        accountV2.setGrade("VIP");
+
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter
+                .filterOutAllExcept("id", "name", "joinDate", "grade");
+
+        FilterProvider filters = new SimpleFilterProvider().addFilter("UserInfoV2",filter);
+
+        MappingJacksonValue mapping = new MappingJacksonValue(accountV2);
         mapping.setFilters(filters);
 
 
