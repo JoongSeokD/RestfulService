@@ -21,8 +21,16 @@ public class AdminAccountController {
     private final AccountDaoService accountDaoService;
 
     @GetMapping("/users")
-    public List<Account> retrieveAllUsers(){
-        return accountDaoService.findAll();
+    public MappingJacksonValue retrieveAllUsers(){
+        List<Account> accounts = accountDaoService.findAll();
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter
+                .filterOutAllExcept("id", "name", "joinDate", "ssn");
+
+        FilterProvider filters = new SimpleFilterProvider().addFilter("UserInfo",filter);
+
+        MappingJacksonValue mapping = new MappingJacksonValue(accounts);
+        mapping.setFilters(filters);
+        return mapping;
     }
 
     // GET / users/1
