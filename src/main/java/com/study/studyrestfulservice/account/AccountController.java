@@ -22,7 +22,11 @@ public class AccountController {
     // GET / users/1
     @GetMapping("/users/{id}")
     public Account retrieveUser(@PathVariable("id") Long id){
-        return accountDaoService.findOne(id);
+        Account account = accountDaoService.findOne(id);
+        if (account == null){
+            throw new UserNotFoundException(String.format("ID[%s] not found", id));
+        }
+        return account;
     }
 
     @PostMapping("/users")
