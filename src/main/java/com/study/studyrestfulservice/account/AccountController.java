@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class AccountController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<Account> createAccount(@RequestBody Account account){
+    public ResponseEntity<Account> createAccount(@Valid @RequestBody Account account){
         Account saveAccount = accountDaoService.save(account);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
