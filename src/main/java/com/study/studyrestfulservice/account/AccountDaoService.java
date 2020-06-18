@@ -14,9 +14,9 @@ public class AccountDaoService {
     private static Long accountCount = 3L;
 
     static {
-        accounts.add(new Account(1L, "account1", LocalDateTime.now()));
-        accounts.add(new Account(2L, "account2", LocalDateTime.now()));
-        accounts.add(new Account(3L, "account3", LocalDateTime.now()));
+        accounts.add(new Account(1L, "account1", LocalDateTime.now(),"pass1","701010-1111111"));
+        accounts.add(new Account(2L, "account2", LocalDateTime.now(),"pass1","801010-2222222"));
+        accounts.add(new Account(3L, "account3", LocalDateTime.now(),"pass1","901010-1111111"));
     }
 
     public List<Account> findAll(){
