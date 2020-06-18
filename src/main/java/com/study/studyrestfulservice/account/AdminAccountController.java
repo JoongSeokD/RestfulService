@@ -35,7 +35,9 @@ public class AdminAccountController {
     }
 
     // GET /admin/users/1 -> /admin/v1/users/1
-    @GetMapping("/v1/users/{id}")
+//    @GetMapping(value = "/users/{id}/", params = "version=1")
+//    @GetMapping(value = "/users/{id}", headers = "X-API-VERSION=1")
+    @GetMapping(value = "/users/{id}", produces = "application/vnd.company.appv1+json")
     public MappingJacksonValue retrieveUserV1(@PathVariable("id") Long id){
         Account account = accountDaoService.findOne(id);
 
@@ -53,7 +55,10 @@ public class AdminAccountController {
 
         return mapping;
     }
-    @GetMapping("/v2/users/{id}")
+//    @GetMapping("/v2/users/{id}")
+//    @GetMapping(value = "/users/{id}/", params = "version=2") //admin/users/1/?version=2
+//    @GetMapping(value = "/users/{id}", headers = "X-API-VERSION=2")
+    @GetMapping(value = "/users/{id}", produces = "application/vnd.company.appv2+json")
     public MappingJacksonValue retrieveUserV2(@PathVariable("id") Long id){
         Account account = accountDaoService.findOne(id);
 
