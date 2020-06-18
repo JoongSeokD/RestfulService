@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -33,6 +34,20 @@ public class AccountDaoService {
     public Account findOne(Long id){
         for (Account account : accounts){
             if (account.getId() == id){
+                return account;
+            }
+        }
+        return null;
+    }
+
+    public Account deleteById(Long id){
+        Iterator<Account> iterator = accounts.iterator();
+
+        while(iterator.hasNext()){
+            Account account = iterator.next();
+
+            if (account.getId() == id){
+                iterator.remove();
                 return account;
             }
         }

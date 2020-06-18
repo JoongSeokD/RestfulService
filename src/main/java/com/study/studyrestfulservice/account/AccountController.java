@@ -40,5 +40,12 @@ public class AccountController {
         return ResponseEntity.created(location).build();
     }
 
+    @DeleteMapping("/users/{id}")
+    public void deleteAccount(@PathVariable("id") Long id){
+        Account account = accountDaoService.deleteById(id);
+        if (account == null){
+            throw new UserNotFoundException(String.format("ID[%s] not found", id));
+        }
+    }
 
 }
