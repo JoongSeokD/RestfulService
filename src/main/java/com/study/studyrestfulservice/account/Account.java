@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 //@JsonIgnoreProperties(value = {"password", "ssn"})
 @NoArgsConstructor
-@JsonFilter("UserInfo")
+//@JsonFilter("UserInfo")
 public class Account {
     private Long id;
 
