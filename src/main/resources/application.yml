@@ -4,4 +4,8 @@ spring:
   messages:
     basename: messages
     encoding: UTF-8
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
