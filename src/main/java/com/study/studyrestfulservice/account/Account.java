@@ -12,18 +12,28 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
-@AllArgsConstructor
 //@JsonIgnoreProperties(value = {"password", "ssn"})
 @NoArgsConstructor
 //@JsonFilter("UserInfo")
 @ApiModel(description = "사용자 상세 정보를 위한 도메인 객체")
 @Entity
 public class Account {
+
+    public Account(Long id, String name, LocalDateTime joinDate, String password, String ssn) {
+        this.id = id;
+        this.name = name;
+        this.joinDate = joinDate;
+        this.password = password;
+        this.ssn = ssn;
+    }
 
     @Id
     @GeneratedValue
@@ -43,4 +53,7 @@ public class Account {
 //    @JsonIgnore
     @ApiModelProperty(notes = "사용자의 주민등록번호를 입력해 주세요.")
     private String ssn;
+
+    @OneToMany(mappedBy = "account")
+    private List<Post> posts = new ArrayList<>();
 }
