@@ -59,4 +59,14 @@ public class AccountJPAController {
         return ResponseEntity.created(location).build();
     }
 
+    @GetMapping("/accounts/{id}/posts")
+    public List<Post> retrieveAllPostsByUser(@PathVariable("id") Long id){
+        Optional<Account> account = accountRepository.findById(id);
+        if (account.isEmpty()){
+            throw new UserNotFoundException(String.format("ID[%s] not found", id));
+        }
+        return account.get().getPosts();
+
+    }
+
 }
