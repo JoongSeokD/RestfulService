@@ -4,11 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.LinkBuilder;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,7 +40,23 @@ public class AccountJPAController {
         resource.add(linkTo.withRel("all-users"));
 
         return resource;
+    }
 
+    @DeleteMapping("/accounts/{id}")
+    public void deleteAccount(@PathVariable Long id){
+        accountRepository.deleteById(id);
+    }
+
+    @PostMapping("/accounts")
+    public ResponseEntity<Account> createAccount(@Valid @RequestBody Account account){
+        Account savedAccount = accountRepository.save(account);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("{id}")
+                .buildAndExpand(savedAccount.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 
 }
