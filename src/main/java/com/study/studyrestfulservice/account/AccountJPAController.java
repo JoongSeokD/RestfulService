@@ -23,6 +23,8 @@ public class AccountJPAController {
 
     private final AccountRepository accountRepository;
 
+    private final PostRepository postRepository;
+
     @GetMapping("/accounts")
     public List<Account> retrieveAllAccounts(){
         return accountRepository.findAll();
@@ -66,7 +68,22 @@ public class AccountJPAController {
             throw new UserNotFoundException(String.format("ID[%s] not found", id));
         }
         return account.get().getPosts();
+    }
 
+
+    @PostMapping("/accounts/{id}/posts")
+    public ResponseEntity<Post> createPost(@PathVariable("id") Long id, @RequestBody Post post){
+        Account account = accountRepository.findById(id).get();
+        post.setAccount(account);
+        account.getPosts().add(post);
+        Post savedPost = postRepository.save(post);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedPost.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 
 }
